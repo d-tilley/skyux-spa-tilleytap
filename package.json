@@ -35,7 +35,7 @@
     "@skyux/assets": "3.1.0",
     "@skyux/avatar": "3.1.0",
     "@skyux/config": "3.9.0",
-    "@skyux/core": "3.14.3",
+    "@skyux/core": "3.15.0",
     "@skyux/errors": "3.2.0",
     "@skyux/flyout": "3.3.0",
     "@skyux/forms": "3.6.3",
@@ -56,12 +56,12 @@
   "devDependencies": {
     "@angular/compiler-cli": "7.2.16",
     "@pact-foundation/pact-web": "7.4.0",
-    "@skyux-sdk/builder": "3.17.0",
+    "@skyux-sdk/builder": "3.19.0",
     "@skyux-sdk/pact": "3.3.1",
     "@skyux-sdk/testing": "3.3.0",
     "@types/core-js": "2.5.3",
     "codelyzer": "4.5.0",
-    "ts-node": "8.10.1",
+    "ts-node": "8.3.0",
     "tslint": "5.20.1",
     "typescript": "3.2.4"
   },

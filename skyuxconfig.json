@@ -1,5 +1,16 @@
 {
   "$schema": "./node_modules/@skyux/config/skyuxconfig-schema.json",
   "compileMode": "aot",
-  "mode": "easy"
+  "mode": "easy",
+  "host": {
+    "frameOptions": {
+      "none": true
+    }
+  },
+  "app": {
+    "theming": {
+      "supportedThemes": ["modern"],
+      "theme": "modern"
+    }
+  }
 }

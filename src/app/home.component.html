@@ -5,62 +5,7 @@
   <sky-fluid-grid>
     <sky-row>
       <sky-column>
-        <sky-card size="large" [selectable]="false">
-          <sky-card-title>
-            <img src="https://brewerydb-images.s3.amazonaws.com/brewery/Q1n2wz/upload_PsJrv6-icon.png"/>
-            <sky-key-info>
-              <sky-key-info-value>
-                Railsplitter
-              </sky-key-info-value>
-              <sky-key-info-label>
-                Triton Brewing Co.
-              </sky-key-info-label>
-            </sky-key-info>
-          </sky-card-title>
-          <sky-card-content>
-            <div class="keg-remaining-percent">
-              <h1>87%</h1>
-              <h3>1/6 BBL</h3>
-            </div>
-            <div class="keg-remaining-icon">
-              <svg width="80px" height="100px">
-                <defs>
-                  <filter id="keg-fill" x="0%" y="0%">
-                    <feFlood [attr.flood-color]="getSvgFillColor(87)"/>
-                    <feOffset [attr.dy]="convertSvgFill(87)"/>
-                    <feComposite operator="in" in2="SourceGraphic"/>
-                    <feComposite operator="over" in2="SourceGraphic"/>
-                  </filter>
-                </defs>
-                <image [attr.filter]="'url(#keg-fill)'" xlink:href="~/assets/beer-keg.svg" width="80px" height="100px"/>
-              </svg>
-            </div>
-            <p>
-              <sky-format
-                text="{0} ounces remaining, about {1} pints."
-                [args]="[ouncesValue, pintsValue]">
-              </sky-format>
-              <ng-template #ouncesValue>
-                <strong>453</strong>
-              </ng-template>
-              <ng-template #pintsValue>
-                <strong>28</strong>
-              </ng-template>
-            </p>
-            <p>
-              <sky-format
-                text="Serving temperature is {0} Fahrenheit."
-                [args]="[temperatureValue]">
-              </sky-format>
-              <ng-template #temperatureValue>
-                <strong>38°</strong>
-              </ng-template>
-            </p>
-          </sky-card-content>
-          <sky-card-actions>
-            <sky-icon icon="info-circle" size="lg" (click)="openBeerInfoFlyout()"></sky-icon>
-          </sky-card-actions>
-        </sky-card>
+        <app-sensor-card [sensorId]="'QTA6MjA6QTY6MTM6NjI6RkE='"></app-sensor-card>
       </sky-column>
     </sky-row>
   </sky-fluid-grid>

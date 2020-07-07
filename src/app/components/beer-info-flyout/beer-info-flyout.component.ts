@@ -1,6 +1,6 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
+
+import { Beer } from '../../models/beer';
 
 @Component({
   selector: 'app-beer-info-flyout',
@@ -9,4 +9,7 @@ import {
 })
 export class BeerInfoFlyoutComponent {
 
+  constructor(
+    public beer: Beer
+  ) {}
 }

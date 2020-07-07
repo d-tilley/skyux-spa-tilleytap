@@ -1,5 +1,3 @@
-import { SensorData } from './sensor-data';
-
 /**
  * Represents an IoT sensor
  */
@@ -16,9 +14,14 @@ export interface Sensor {
   type?: Sensor.SensorTypeEnum;
 
   /**
-   * The data collected from the sensor
+   * The sensor data
    */
-  sensorData?: SensorData;
+  data?: number;
+
+  /**
+   * Timestamp of the sensor data upload
+   */
+  timestamp?: number;
 
   /**
    * Metadata specific to the sensor type

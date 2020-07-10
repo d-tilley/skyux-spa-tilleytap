@@ -9,9 +9,10 @@ import {
 
 import { ApiService } from '../../services/api/api.service';
 import { BeerInfoFlyoutComponent } from '../../components/beer-info-flyout/beer-info-flyout.component';
-import { Sensor } from '../../models/sensor';
-import { Beer } from '../../models/beer';
-import { Brewery } from '../../models/brewery';
+import { Sensor } from '../../models/sensor.model';
+import { Beer } from '../../models/beer.model';
+import { Brewery } from '../../models/brewery.model';
+import { Keg, KEG_MAPPING } from '../../models/keg.model';
 
 const BLUE_COLOR = '#00b4f1';
 const YELLOW_COLOR = '#ffce00';
@@ -43,7 +44,7 @@ export class SensorCardComponent implements OnInit {
       ).subscribe(result => this.buildBeerObject(JSON.parse(result)));
   }
 
-  // Convert the BreweryDb api response to our client Beer object
+  // Convert the keg sensor readings and BreweryDb api response to our client Beer object
   public buildBeerObject(obj: any) {
     this.beer = new Beer({
       id: obj.data.id,
@@ -64,6 +65,16 @@ export class SensorCardComponent implements OnInit {
     } else {
       this.beer.brewery = new Brewery();
     }
+
+    let kegMapping = KEG_MAPPING.map.get(+this.sensor.metadata.kegType);
+    this.beer.keg = new Keg({
+      currentWeight: this.sensor.data,
+      fullWeight: this.sensor.metadata.fullWeight,
+      kegType: +this.sensor.metadata.kegType,
+      kegTypeCapacity: +kegMapping.capacity,
+      kegTypeName: kegMapping.name,
+      kegTypeLabel: kegMapping.label
+    });
   }
 
   // The SVG DY attribute indicates a vertical shift from the top down

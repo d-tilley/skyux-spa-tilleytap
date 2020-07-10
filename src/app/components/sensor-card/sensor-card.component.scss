@@ -21,6 +21,12 @@ sky-card-content {
   display: block;
 }
 
+sky-key-info-value {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .keg-remaining-percent {
   vertical-align: middle;
   padding-right: 25px;
@@ -38,4 +44,12 @@ sky-card-content {
 .keg-remaining-icon {
   vertical-align: middle;
   display: inline-block;
+}
+
+#breweryName {
+  display: block;
+}
+
+#beerStyle {
+  font-weight: 100;
 }

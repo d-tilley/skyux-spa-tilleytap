@@ -1,5 +1,5 @@
 /**
- * Represents a BreweryDB brewery
+ * Represents a brewery
  */
 export class Brewery {
 
@@ -14,12 +14,12 @@ export class Brewery {
   public name?: string;
 
   /**
-   * The small brewery image url
+   * The brewery small image url
    */
   public imageSmallUrl?: string;
 
   /**
-   * The medium brewery image url
+   * The brewery medium image url
    */
   public imageMediumUrl?: string;
 

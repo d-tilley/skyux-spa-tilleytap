@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 
-import { Beer } from '../../models/beer';
+import { Beer } from '../../models/beer.model';
 
 @Component({
   selector: 'app-beer-info-flyout',

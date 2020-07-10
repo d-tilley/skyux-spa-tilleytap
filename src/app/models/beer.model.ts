@@ -1,7 +1,8 @@
-import { Brewery } from './brewery';
+import { Brewery } from './brewery.model';
+import { Keg } from './keg.model';
 
 /**
- * Represents a BreweryDB beer
+ * Represents a beer!
  */
 export class Beer {
 
@@ -39,6 +40,11 @@ export class Beer {
    * The beer brewery
    */
   public brewery?: Brewery;
+
+  /**
+   * The beer keg data
+   */
+  public keg?: Keg;
 
   constructor(init?: Partial<Beer>) {
     Object.assign(this, init);

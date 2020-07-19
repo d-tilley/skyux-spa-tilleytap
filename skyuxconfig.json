@@ -7,7 +7,9 @@
       "none": true
     }
   },
+  "useHashRouting": true,
   "app": {
+    "base": "./",
     "theming": {
       "supportedThemes": ["modern"],
       "theme": "modern"

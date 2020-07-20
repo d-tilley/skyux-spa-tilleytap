@@ -4,7 +4,8 @@ import { SkyAvatarModule } from '@skyux/avatar';
 import {
   SkyAlertModule,
   SkyKeyInfoModule,
-  SkyIconModule
+  SkyIconModule,
+  SkyWaitModule
 } from '@skyux/indicators';
 import {
   SkyFluidGridModule,
@@ -28,7 +29,8 @@ import { SkyFlyoutModule } from '@skyux/flyout';
     SkyIconModule,
     SkyFlyoutModule,
     SkyPageSummaryModule,
-    SkyDefinitionListModule
+    SkyDefinitionListModule,
+    SkyWaitModule
   ]
 })
 export class AppSkyModule { }

@@ -5,7 +5,7 @@
   <sky-fluid-grid>
     <sky-row>
       <sky-column>
-        <app-sensor-card [sensorId]="'QTA6MjA6QTY6MTM6NjI6RkE='"></app-sensor-card>
+        <app-sensor-card *ngIf="beer" [sensor]="sensor" [beer]="beer"></app-sensor-card>
       </sky-column>
     </sky-row>
   </sky-fluid-grid>

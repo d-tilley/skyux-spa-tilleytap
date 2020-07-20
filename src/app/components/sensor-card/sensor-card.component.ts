@@ -1,5 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { mergeMap } from 'rxjs/operators';
+import { Component, Input } from '@angular/core';
 
 import {
   SkyFlyoutInstance,
@@ -7,12 +6,9 @@ import {
   SkyFlyoutConfig
 } from '@skyux/flyout';
 
-import { ApiService } from '../../services/api/api.service';
 import { BeerInfoFlyoutComponent } from '../../components/beer-info-flyout/beer-info-flyout.component';
 import { Sensor } from '../../models/sensor.model';
 import { Beer } from '../../models/beer.model';
-import { Brewery } from '../../models/brewery.model';
-import { Keg, KEG_MAPPING } from '../../models/keg.model';
 
 const BLUE_COLOR = '#00b4f1';
 const YELLOW_COLOR = '#ffce00';
@@ -23,59 +19,57 @@ const RED_COLOR = '#f04141';
   templateUrl: './sensor-card.component.html',
   styleUrls: ['./sensor-card.component.scss']
 })
-export class SensorCardComponent implements OnInit {
-  @Input() public sensorId: string;
+export class SensorCardComponent {
+  @Input() public sensor: Sensor;
+  @Input() public beer: Beer;
   public flyout: SkyFlyoutInstance<any>;
-  public sensor: Sensor;
-  public beer: Beer;
 
   constructor(
-    private flyoutSvc: SkyFlyoutService,
-    private apiSvc: ApiService
+    private flyoutSvc: SkyFlyoutService
   ) {}
 
-  public ngOnInit() {
-    this.apiSvc.getSensor(this.sensorId)
-      .pipe(
-        mergeMap((sensor: Sensor) => {
-          this.sensor = sensor;
-          return this.apiSvc.getBeer(sensor.metadata.breweryDbId);
-        })
-      ).subscribe(result => this.buildBeerObject(JSON.parse(result)));
-  }
+  // public ngOnInit() {
+  //   this.apiSvc.getSensor(this.sensorId)
+  //     .pipe(
+  //       mergeMap((sensor: Sensor) => {
+  //         this.sensor = sensor;
+  //         return this.apiSvc.getBeer(sensor.metadata.breweryDbId);
+  //       })
+  //     ).subscribe(result => this.buildBeerObject(JSON.parse(result)));
+  // }
 
-  // Convert the keg sensor readings and BreweryDb api response to our client Beer object
-  public buildBeerObject(obj: any) {
-    this.beer = new Beer({
-      id: obj.data.id,
-      name: obj.data.name,
-      description: obj.data.description,
-      abv: obj.data.abv,
-      ibu: obj.data.ibu,
-      style: obj.data.style.shortName
-    });
+  // // Convert the keg sensor readings and BreweryDb api response to our client Beer object
+  // public buildBeerObject(obj: any) {
+  //   this.beer = new Beer({
+  //     id: obj.data.id,
+  //     name: obj.data.name,
+  //     description: obj.data.description,
+  //     abv: obj.data.abv,
+  //     ibu: obj.data.ibu,
+  //     style: obj.data.style.shortName
+  //   });
 
-    if (obj.data.breweries) {
-      this.beer.brewery = new Brewery({
-        id: obj.data.breweries[0].id,
-        name: obj.data.breweries[0].name,
-        imageSmallUrl: obj.data.breweries[0].images.icon,
-        imageMediumUrl: obj.data.breweries[0].images.squareMedium
-      });
-    } else {
-      this.beer.brewery = new Brewery();
-    }
+  //   if (obj.data.breweries) {
+  //     this.beer.brewery = new Brewery({
+  //       id: obj.data.breweries[0].id,
+  //       name: obj.data.breweries[0].name,
+  //       imageSmallUrl: obj.data.breweries[0].images.icon,
+  //       imageMediumUrl: obj.data.breweries[0].images.squareMedium
+  //     });
+  //   } else {
+  //     this.beer.brewery = new Brewery();
+  //   }
 
-    let kegMapping = KEG_MAPPING.map.get(+this.sensor.metadata.kegType);
-    this.beer.keg = new Keg({
-      currentWeight: this.sensor.data,
-      fullWeight: this.sensor.metadata.fullWeight,
-      kegType: +this.sensor.metadata.kegType,
-      kegTypeCapacity: +kegMapping.capacity,
-      kegTypeName: kegMapping.name,
-      kegTypeLabel: kegMapping.label
-    });
-  }
+  //   let kegMapping = KEG_MAPPING.map.get(+this.sensor.metadata.kegType);
+  //   this.beer.keg = new Keg({
+  //     currentWeight: this.sensor.metadata.weight,
+  //     fullWeight: this.sensor.metadata.fullWeight,
+  //     kegType: +this.sensor.metadata.kegType,
+  //     kegTypeCapacity: +kegMapping.capacity,
+  //     kegTypeName: kegMapping.name,
+  //     kegTypeLabel: kegMapping.label
+  //   });
+  // }
 
   // The SVG DY attribute indicates a vertical shift from the top down
   // Our SVG icons are fixed at a 100px height

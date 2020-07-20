@@ -1,5 +1,11 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnDestroy } from '@angular/core';
 
+import { Subscription } from 'rxjs';
+
+import {
+  SkyMediaQueryService,
+  SkyMediaBreakpoints
+} from '@skyux/core';
 import {
   SkyFlyoutInstance,
   SkyFlyoutService,
@@ -19,63 +25,42 @@ const RED_COLOR = '#f04141';
   templateUrl: './sensor-card.component.html',
   styleUrls: ['./sensor-card.component.scss']
 })
-export class SensorCardComponent {
+export class SensorCardComponent implements OnDestroy {
   @Input() public sensor: Sensor;
   @Input() public beer: Beer;
   public flyout: SkyFlyoutInstance<any>;
+  public cardSize: string;
+  private mediaQuerySubscription: Subscription;
 
   constructor(
-    private flyoutSvc: SkyFlyoutService
-  ) {}
-
-  // public ngOnInit() {
-  //   this.apiSvc.getSensor(this.sensorId)
-  //     .pipe(
-  //       mergeMap((sensor: Sensor) => {
-  //         this.sensor = sensor;
-  //         return this.apiSvc.getBeer(sensor.metadata.breweryDbId);
-  //       })
-  //     ).subscribe(result => this.buildBeerObject(JSON.parse(result)));
-  // }
-
-  // // Convert the keg sensor readings and BreweryDb api response to our client Beer object
-  // public buildBeerObject(obj: any) {
-  //   this.beer = new Beer({
-  //     id: obj.data.id,
-  //     name: obj.data.name,
-  //     description: obj.data.description,
-  //     abv: obj.data.abv,
-  //     ibu: obj.data.ibu,
-  //     style: obj.data.style.shortName
-  //   });
-
-  //   if (obj.data.breweries) {
-  //     this.beer.brewery = new Brewery({
-  //       id: obj.data.breweries[0].id,
-  //       name: obj.data.breweries[0].name,
-  //       imageSmallUrl: obj.data.breweries[0].images.icon,
-  //       imageMediumUrl: obj.data.breweries[0].images.squareMedium
-  //     });
-  //   } else {
-  //     this.beer.brewery = new Brewery();
-  //   }
-
-  //   let kegMapping = KEG_MAPPING.map.get(+this.sensor.metadata.kegType);
-  //   this.beer.keg = new Keg({
-  //     currentWeight: this.sensor.metadata.weight,
-  //     fullWeight: this.sensor.metadata.fullWeight,
-  //     kegType: +this.sensor.metadata.kegType,
-  //     kegTypeCapacity: +kegMapping.capacity,
-  //     kegTypeName: kegMapping.name,
-  //     kegTypeLabel: kegMapping.label
-  //   });
-  // }
+    private flyoutSvc: SkyFlyoutService,
+    private mediaQueries: SkyMediaQueryService
+  ) {
+    this.mediaQuerySubscription = this.mediaQueries.subscribe((breakpoint: SkyMediaBreakpoints) => {
+      switch (breakpoint) {
+        case SkyMediaBreakpoints.xs:
+          this.cardSize = 'small';
+          break;
+        case SkyMediaBreakpoints.sm:
+        case SkyMediaBreakpoints.md:
+        case SkyMediaBreakpoints.lg:
+          this.cardSize = 'large';
+          break;
+        default:
+          this.cardSize = 'large';
+      }
+    });
+  }
 
   // The SVG DY attribute indicates a vertical shift from the top down
   // Our SVG icons are fixed at a 100px height
   // We'll want to push our SVG fill down by the remaining unfilled percantage
   public convertSvgFill(percent: number): number {
-    return Math.floor(100 - percent);
+    if (this.cardSize === 'small') {
+      return Math.floor((100 - percent) / 2);
+    } else {
+      return Math.floor(100 - percent);
+    }
   }
 
   // Get the SVG fill color based on percent full
@@ -107,5 +92,11 @@ export class SensorCardComponent {
     this.flyout.closed.subscribe(() => {
       this.flyout = undefined;
     });
+  }
+
+  public ngOnDestroy() {
+    if (this.mediaQuerySubscription) {
+      this.mediaQuerySubscription.unsubscribe();
+    }
   }
 }

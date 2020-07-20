@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 
 import { SkyAvatarModule } from '@skyux/avatar';
+import { SkyMediaQueryModule } from '@skyux/core';
 import {
   SkyAlertModule,
   SkyKeyInfoModule,
@@ -30,7 +31,8 @@ import { SkyFlyoutModule } from '@skyux/flyout';
     SkyFlyoutModule,
     SkyPageSummaryModule,
     SkyDefinitionListModule,
-    SkyWaitModule
+    SkyWaitModule,
+    SkyMediaQueryModule
   ]
 })
 export class AppSkyModule { }

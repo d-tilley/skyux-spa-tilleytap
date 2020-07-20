@@ -21,23 +21,17 @@ sky-card-content {
   display: block;
 }
 
-sky-key-info-value {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.keg-remaining-percent {
+.keg-info {
   vertical-align: middle;
   padding-right: 25px;
   display: inline-block;
 }
 
-.keg-remaining-percent h1 {
-  margin: 0px 0px 10px 0px;
+.keg-remaining-percent {
+  margin: 0px 0px 6px 0px;
 }
 
-.keg-remaining-percent h3 {
+.keg-label {
   margin: 0px;
 }
 
@@ -52,6 +46,19 @@ sky-key-info-value {
 
 #beerStyle {
   font-weight: 100;
+}
+
+.small-card-title {
+  max-width: 125px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+
+.small-text {
+  font-size: 12px;
+  margin: 6px 0px;
 }
 
 @media screen and (min-width: 992px) {

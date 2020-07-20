@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">tilleytap</string>
+    <string name="title_activity_main">tilleytap</string>
+    <string name="package_name">com.tilleytap.app</string>
+    <string name="custom_url_scheme">com.tilleytap.app</string>
+</resources>

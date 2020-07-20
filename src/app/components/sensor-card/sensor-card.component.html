@@ -1,23 +1,30 @@
-<sky-card size="large" [selectable]="false" *ngIf="beer">
+<sky-card [size]="cardSize" [selectable]="false" *ngIf="beer">
   <sky-card-title>
     <img src="{{beer.brewery.imageSmallUrl}}"/>
     <sky-key-info>
       <sky-key-info-value>
+        <!-- <span [class.small-card-title]="cardSize === 'small'">{{beer.name}}</span> -->
         {{beer.name}}
       </sky-key-info-value>
       <sky-key-info-label>
-        <span id="breweryName">{{beer.brewery.name}}</span>
+        <span id="breweryName" [class.small-card-title]="cardSize === 'small'">{{beer.brewery.name}}</span>
         <span id="beerStyle">{{beer.style}}</span>
       </sky-key-info-label>
     </sky-key-info>
   </sky-card-title>
   <sky-card-content>
-    <div class="keg-remaining-percent">
-      <h1>{{beer.keg.getPercentRemaining()}}%</h1>
-      <h3>{{beer.keg.kegTypeLabel}}</h3>
+    <div class="keg-info">
+      <div *ngIf="cardSize === 'large'">
+        <h1 class="keg-remaining-percent">{{beer.keg.getPercentRemaining()}}%</h1>
+        <h3 class="keg-label">{{beer.keg.kegTypeLabel}}</h3>
+      </div>
+      <div *ngIf="cardSize === 'small'">
+        <h3 class="keg-remaining-percent">{{beer.keg.getPercentRemaining()}}%</h3>
+        <h5 class="keg-label">{{beer.keg.kegTypeLabel}}</h5>
+      </div>
     </div>
     <div class="keg-remaining-icon">
-      <svg width="80px" height="100px">
+      <svg [attr.width]="cardSize === 'large' ? '80px' : '40px'" [attr.height]="cardSize === 'large' ? '100px' : '50px'">
         <defs>
           <filter id="keg-fill" x="0%" y="0%">
             <feFlood [attr.flood-color]="getSvgFillColor(beer.keg.getPercentRemaining())"/>
@@ -26,28 +33,31 @@
             <feComposite operator="over" in2="SourceGraphic"/>
           </filter>
         </defs>
-        <image [attr.filter]="'url(#keg-fill)'" xlink:href="~/assets/beer-keg.svg" width="80px" height="100px"/>
+        <image [attr.filter]="'url(#keg-fill)'"
+          xlink:href="~/assets/beer-keg.svg"
+          [attr.width]="cardSize === 'large' ? '80px' : '40px'"
+          [attr.height]="cardSize === 'large' ? '100px' : '50px'"/>
       </svg>
     </div>
-    <p>
+    <p [class.small-text]="cardSize === 'small'">
       <sky-format
-        text="{0} ounces remaining, about {1} pints."
+        text="{0} remaining, about {1}."
         [args]="[ouncesValue, pintsValue]">
       </sky-format>
       <ng-template #ouncesValue>
-        <strong>{{this.beer.keg.getOuncesRemaining()}}</strong>
+        <strong>{{this.beer.keg.getOuncesRemaining()}} <span *ngIf="cardSize === 'large'">ounces</span><span *ngIf="cardSize === 'small'">oz.</span></strong>
       </ng-template>
       <ng-template #pintsValue>
-        <strong>{{beer.keg.getPintsRemaining()}}</strong>
+        <strong>{{beer.keg.getPintsRemaining()}} pints</strong>
       </ng-template>
     </p>
-    <p>
+    <p [class.small-text]="cardSize === 'small'">
       <sky-format
-        text="Serving temperature is {0} Fahrenheit."
-        [args]="[temperatureValue]">
+        text="A beer was last poured {0} ago."
+        [args]="[lastBeerPourValue]">
       </sky-format>
-      <ng-template #temperatureValue>
-        <strong>38°</strong>
+      <ng-template #lastBeerPourValue>
+        <strong>{{(sensor.metadata.lastBeerPour * 1000) | dateAgo}}</strong>
       </ng-template>
     </p>
   </sky-card-content>

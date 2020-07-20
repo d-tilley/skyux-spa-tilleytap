@@ -1,0 +1,13 @@
+{
+  "appId": "com.tilleytap.app",
+  "appName": "TilleyTap",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "dist",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
+}

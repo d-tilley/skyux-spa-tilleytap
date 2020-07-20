@@ -10,11 +10,11 @@ import {
 export class AppNavComponent {
   public nav = [
     {
-      titleKey: 'app_nav_home',
+      title: 'Home',
       path: '/'
     },
     {
-      titleKey: 'app_nav_about',
+      title: 'About',
       path: '/about'
     }
   ];

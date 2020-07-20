@@ -52,7 +52,7 @@ export class Keg {
   // Get number of ounces remaining
   public getOuncesRemaining(): number {
     let consumed = (this.fullWeight - this.currentWeight) * 16;
-    return this.kegTypeCapacity - consumed;
+    return Math.floor(this.kegTypeCapacity - consumed);
   }
 }
 

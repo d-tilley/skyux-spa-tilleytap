@@ -31,23 +31,23 @@
     </div>
     <p>
       <sky-format
-        text="{0} ounces remaining, about {1} pints."
+        text="{0} remaining, about {1}."
         [args]="[ouncesValue, pintsValue]">
       </sky-format>
       <ng-template #ouncesValue>
-        <strong>{{this.beer.keg.getOuncesRemaining()}}</strong>
+        <strong>{{this.beer.keg.getOuncesRemaining()}} ounces</strong>
       </ng-template>
       <ng-template #pintsValue>
-        <strong>{{beer.keg.getPintsRemaining()}}</strong>
+        <strong>{{beer.keg.getPintsRemaining()}} pints</strong>
       </ng-template>
     </p>
     <p>
       <sky-format
-        text="Serving temperature is {0} Fahrenheit."
-        [args]="[temperatureValue]">
+        text="A beer was last poured {0} ago."
+        [args]="[lastBeerPourValue]">
       </sky-format>
-      <ng-template #temperatureValue>
-        <strong>38°</strong>
+      <ng-template #lastBeerPourValue>
+        <strong>{{(sensor.metadata.lastBeerPour * 1000) | dateAgo}}</strong>
       </ng-template>
     </p>
   </sky-card-content>

@@ -17,6 +17,7 @@ import {
 } from '@skyux/layout';
 import { SkyNavbarModule } from '@skyux/navbar';
 import { SkyFlyoutModule } from '@skyux/flyout';
+import { SkyModalModule } from '@skyux/modals';
 
 @NgModule({
   exports: [
@@ -32,7 +33,8 @@ import { SkyFlyoutModule } from '@skyux/flyout';
     SkyPageSummaryModule,
     SkyDefinitionListModule,
     SkyWaitModule,
-    SkyMediaQueryModule
+    SkyMediaQueryModule,
+    SkyModalModule
   ]
 })
 export class AppSkyModule { }

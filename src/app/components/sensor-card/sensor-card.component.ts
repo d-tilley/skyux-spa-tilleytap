@@ -11,10 +11,16 @@ import {
   SkyFlyoutService,
   SkyFlyoutConfig
 } from '@skyux/flyout';
+import {
+  SkyModalService,
+  SkyModalInstance,
+  SkyModalConfigurationInterface
+} from '@skyux/modals';
 
 import { BeerInfoFlyoutComponent } from '../../components/beer-info-flyout/beer-info-flyout.component';
 import { Sensor } from '../../models/sensor.model';
 import { Beer } from '../../models/beer.model';
+import { BeerInfoModalComponent } from '../beer-info-modal/beer-info-modal.component';
 
 const BLUE_COLOR = '#00b4f1';
 const YELLOW_COLOR = '#ffce00';
@@ -28,11 +34,13 @@ const RED_COLOR = '#f04141';
 export class SensorCardComponent implements OnDestroy {
   @Input() public sensor: Sensor;
   @Input() public beer: Beer;
+  public modal: SkyModalInstance;
   public flyout: SkyFlyoutInstance<any>;
-  public cardSize: string;
+  public cardSize: string = 'large'; // default: will be set in the constructor
   private mediaQuerySubscription: Subscription;
 
   constructor(
+    private modalSvc: SkyModalService,
     private flyoutSvc: SkyFlyoutService,
     private mediaQueries: SkyMediaQueryService
   ) {
@@ -76,6 +84,25 @@ export class SensorCardComponent implements OnDestroy {
 
   public getSvgLocation() {
     return window.location.href + 'assets/beer-keg.svg';
+  }
+
+  public openBeerInfoModal(): void {
+    let modalConfig: SkyModalConfigurationInterface = {
+      providers: [{
+        provide: Beer,
+        useValue: this.beer
+      }]
+    };
+    if (this.cardSize === 'small') {
+      modalConfig.fullPage = true;
+    } else {
+      modalConfig.size = 'large';
+    }
+    this.modal = this.modalSvc.open(BeerInfoModalComponent, modalConfig);
+
+    this.modal.closed.subscribe(() => {
+      this.modal = undefined;
+    });
   }
 
   public openBeerInfoFlyout(): void {

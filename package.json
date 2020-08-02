@@ -47,6 +47,7 @@
     "@skyux/modals": "4.1.0",
     "@skyux/navbar": "4.0.0",
     "@skyux/omnibar-interop": "4.0.0",
+    "@skyux/popovers": "4.1.0",
     "@skyux/router": "4.0.0",
     "@skyux/theme": "4.3.0",
     "rxjs": "6.5.5",

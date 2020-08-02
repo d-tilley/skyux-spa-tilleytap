@@ -9,6 +9,7 @@
   },
   "useHashRouting": true,
   "app": {
+    "title": "TilleyTap - Home Beer Monitor",
     "theming": {
       "supportedThemes": ["modern"],
       "theme": "modern"

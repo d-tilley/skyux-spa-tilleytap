@@ -36,7 +36,7 @@ export class SensorCardComponent implements OnDestroy {
   @Input() public beer: Beer;
   public modal: SkyModalInstance;
   public flyout: SkyFlyoutInstance<any>;
-  public cardSize: string = 'large'; // default: will be set in the constructor
+  public screenSize: SkyMediaBreakpoints;
   private mediaQuerySubscription: Subscription;
 
   constructor(
@@ -45,18 +45,7 @@ export class SensorCardComponent implements OnDestroy {
     private mediaQueries: SkyMediaQueryService
   ) {
     this.mediaQuerySubscription = this.mediaQueries.subscribe((breakpoint: SkyMediaBreakpoints) => {
-      switch (breakpoint) {
-        case SkyMediaBreakpoints.xs:
-          this.cardSize = 'small';
-          break;
-        case SkyMediaBreakpoints.sm:
-        case SkyMediaBreakpoints.md:
-        case SkyMediaBreakpoints.lg:
-          this.cardSize = 'large';
-          break;
-        default:
-          this.cardSize = 'large';
-      }
+      this.screenSize = breakpoint;
     });
   }
 
@@ -64,11 +53,7 @@ export class SensorCardComponent implements OnDestroy {
   // Our SVG icons are fixed at a 100px height
   // We'll want to push our SVG fill down by the remaining unfilled percantage
   public convertSvgFill(percent: number): number {
-    if (this.cardSize === 'small') {
-      return Math.floor((100 - percent) / 2);
-    } else {
-      return Math.floor(100 - percent);
-    }
+    return Math.floor(100 - percent);
   }
 
   // Get the SVG fill color based on percent full
@@ -86,6 +71,21 @@ export class SensorCardComponent implements OnDestroy {
     return window.location.href + 'assets/beer-keg.svg';
   }
 
+  public openBeerInfo(): void {
+    switch (this.screenSize) {
+      case SkyMediaBreakpoints.xs:
+        this.openBeerInfoFlyout();
+        break;
+      case SkyMediaBreakpoints.sm:
+      case SkyMediaBreakpoints.md:
+      case SkyMediaBreakpoints.lg:
+        this.openBeerInfoModal();
+        break;
+      default:
+        this.openBeerInfoModal();
+    }
+  }
+
   public openBeerInfoModal(): void {
     let modalConfig: SkyModalConfigurationInterface = {
       providers: [{
@@ -93,11 +93,7 @@ export class SensorCardComponent implements OnDestroy {
         useValue: this.beer
       }]
     };
-    if (this.cardSize === 'small') {
-      modalConfig.fullPage = true;
-    } else {
-      modalConfig.size = 'large';
-    }
+    modalConfig.size = 'large';
     this.modal = this.modalSvc.open(BeerInfoModalComponent, modalConfig);
 
     this.modal.closed.subscribe(() => {

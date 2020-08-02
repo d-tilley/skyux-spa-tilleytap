@@ -1,3 +1,10 @@
+sky-card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
 sky-card-title sky-key-info {
   display: inline-block;
 }
@@ -12,10 +19,6 @@ sky-card-actions sky-icon {
   cursor: pointer;
 }
 
-sky-card-actions sky-icon:not(:last-child) {
-  padding-right: 40px;
-}
-
 sky-card-content {
   text-align: center;
   display: block;
@@ -28,7 +31,7 @@ sky-card-content {
 }
 
 .keg-remaining-percent {
-  margin: 0px 0px 6px 0px;
+  margin: 0px 0px 10px 0px;
 }
 
 .keg-label {
@@ -48,22 +51,19 @@ sky-card-content {
   font-weight: 100;
 }
 
-.small-card-title {
-  max-width: 125px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: inline-block;
+@media screen and (max-width: 767px) {
+  ::ng-deep .sky-card {
+    width: 100% !important;
+    margin: 0 auto !important;
+  }
 }
 
-.small-text {
-  font-size: 12px;
-  margin: 6px 0px;
-}
+@media screen and (max-width: 350px) {
+  ::ng-deep .sky-column {
+    padding: 0px !important;
+  }
 
-@media screen and (min-width: 992px) {
-  sky-card {
-    margin: auto;
-    width: 100px;
+  sky-card-content p {
+    font-size: 14px !important;
   }
 }

@@ -9,7 +9,7 @@
   },
   "useHashRouting": true,
   "app": {
-    "title": "TilleyTap - Home Beer Monitor",
+    "title": "TilleyTap - Home Kegerator Monitor",
     "theming": {
       "supportedThemes": ["modern"],
       "theme": "modern"

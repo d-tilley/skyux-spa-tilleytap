@@ -1,4 +1,4 @@
-<sky-card [size]="large" [selectable]="false" *ngIf="beer">
+<sky-card [size]="'large'" [selectable]="false" *ngIf="beer">
   <sky-card-title>
     <img src="{{beer.brewery.imageSmallUrl}}"/>
     <sky-key-info>
@@ -59,9 +59,9 @@
         <sky-dropdown-item>
           <button type="button" (click)="openBeerInfo()">View beer info</button>
         </sky-dropdown-item>
-        <sky-dropdown-item>
+        <!-- <sky-dropdown-item>
           <button type="button">Edit settings</button>
-        </sky-dropdown-item>
+        </sky-dropdown-item> -->
       </sky-dropdown-menu>
     </sky-dropdown>
   </sky-card-actions>

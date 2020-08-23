@@ -1,6 +1,10 @@
 {
   "$schema": "./node_modules/@skyux/config/skyuxconfig-schema.json",
   "compileMode": "aot",
+  "auth": false,
+  "plugins": [
+    "@blackbaud/skyux-builder-plugin-stache"
+  ],
   "mode": "easy",
   "host": {
     "frameOptions": {

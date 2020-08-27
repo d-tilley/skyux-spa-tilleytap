@@ -11,10 +11,16 @@ import {
   SkyFlyoutService,
   SkyFlyoutConfig
 } from '@skyux/flyout';
+import {
+  SkyModalService,
+  SkyModalInstance,
+  SkyModalConfigurationInterface
+} from '@skyux/modals';
 
 import { BeerInfoFlyoutComponent } from '../../components/beer-info-flyout/beer-info-flyout.component';
 import { Sensor } from '../../models/sensor.model';
 import { Beer } from '../../models/beer.model';
+import { BeerInfoModalComponent } from '../beer-info-modal/beer-info-modal.component';
 
 const BLUE_COLOR = '#00b4f1';
 const YELLOW_COLOR = '#ffce00';
@@ -28,27 +34,18 @@ const RED_COLOR = '#f04141';
 export class SensorCardComponent implements OnDestroy {
   @Input() public sensor: Sensor;
   @Input() public beer: Beer;
+  public modal: SkyModalInstance;
   public flyout: SkyFlyoutInstance<any>;
-  public cardSize: string;
+  public screenSize: SkyMediaBreakpoints;
   private mediaQuerySubscription: Subscription;
 
   constructor(
+    private modalSvc: SkyModalService,
     private flyoutSvc: SkyFlyoutService,
     private mediaQueries: SkyMediaQueryService
   ) {
     this.mediaQuerySubscription = this.mediaQueries.subscribe((breakpoint: SkyMediaBreakpoints) => {
-      switch (breakpoint) {
-        case SkyMediaBreakpoints.xs:
-          this.cardSize = 'small';
-          break;
-        case SkyMediaBreakpoints.sm:
-        case SkyMediaBreakpoints.md:
-        case SkyMediaBreakpoints.lg:
-          this.cardSize = 'large';
-          break;
-        default:
-          this.cardSize = 'large';
-      }
+      this.screenSize = breakpoint;
     });
   }
 
@@ -56,11 +53,7 @@ export class SensorCardComponent implements OnDestroy {
   // Our SVG icons are fixed at a 100px height
   // We'll want to push our SVG fill down by the remaining unfilled percantage
   public convertSvgFill(percent: number): number {
-    if (this.cardSize === 'small') {
-      return Math.floor((100 - percent) / 2);
-    } else {
-      return Math.floor(100 - percent);
-    }
+    return Math.floor(100 - percent);
   }
 
   // Get the SVG fill color based on percent full
@@ -76,6 +69,36 @@ export class SensorCardComponent implements OnDestroy {
 
   public getSvgLocation() {
     return window.location.href + 'assets/beer-keg.svg';
+  }
+
+  public openBeerInfo(): void {
+    switch (this.screenSize) {
+      case SkyMediaBreakpoints.xs:
+        this.openBeerInfoFlyout();
+        break;
+      case SkyMediaBreakpoints.sm:
+      case SkyMediaBreakpoints.md:
+      case SkyMediaBreakpoints.lg:
+        this.openBeerInfoModal();
+        break;
+      default:
+        this.openBeerInfoModal();
+    }
+  }
+
+  public openBeerInfoModal(): void {
+    let modalConfig: SkyModalConfigurationInterface = {
+      providers: [{
+        provide: Beer,
+        useValue: this.beer
+      }]
+    };
+    modalConfig.size = 'large';
+    this.modal = this.modalSvc.open(BeerInfoModalComponent, modalConfig);
+
+    this.modal.closed.subscribe(() => {
+      this.modal = undefined;
+    });
   }
 
   public openBeerInfoFlyout(): void {

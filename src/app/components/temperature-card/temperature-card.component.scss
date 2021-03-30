@@ -1,0 +1,45 @@
+::ng-deep .sky-card {
+  width: 100% !important;
+  margin: 8px auto !important;
+}
+
+sky-card-content {
+  text-align: center;
+  display: block;
+  height: 100%;
+}
+
+.temperature-info {
+  vertical-align: middle;
+  padding-right: 25px;
+  display: inline-block;
+}
+
+.temperature-degrees {
+  margin: 0px 0px 10px 0px;
+}
+
+.temperature-units {
+  margin: 0px;
+}
+
+.temperature-icon {
+  vertical-align: middle;
+  display: inline-block;
+  font-size: 100px;
+  color: #00b4f1;
+}
+
+sky-key-info, sky-key-info-value {
+  vertical-align: top;
+}
+
+@media screen and (max-width: 350px) {
+  ::ng-deep .sky-column {
+    padding: 0px !important;
+  }
+
+  sky-card-content p {
+    font-size: 14px !important;
+  }
+}

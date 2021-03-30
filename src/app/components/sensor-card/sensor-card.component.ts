@@ -1,6 +1,12 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnDestroy,
+  OnInit
+} from '@angular/core';
 
 import { Subscription } from 'rxjs';
+import { finalize, mergeMap } from 'rxjs/operators';
 
 import {
   SkyMediaQueryService,
@@ -17,10 +23,13 @@ import {
   SkyModalConfigurationInterface
 } from '@skyux/modals';
 
+import { ApiService } from '../../services/api/api.service';
 import { BeerInfoFlyoutComponent } from '../../components/beer-info-flyout/beer-info-flyout.component';
-import { Sensor } from '../../models/sensor.model';
+import { WeightSensor } from '../../models/weight-sensor.model';
 import { Beer } from '../../models/beer.model';
 import { BeerInfoModalComponent } from '../beer-info-modal/beer-info-modal.component';
+import { Brewery } from '../../models/brewery.model';
+import { Keg, KEG_MAPPING } from '../../models/keg.model';
 
 const BLUE_COLOR = '#00b4f1';
 const YELLOW_COLOR = '#ffce00';
@@ -31,15 +40,18 @@ const RED_COLOR = '#f04141';
   templateUrl: './sensor-card.component.html',
   styleUrls: ['./sensor-card.component.scss']
 })
-export class SensorCardComponent implements OnDestroy {
-  @Input() public sensor: Sensor;
-  @Input() public beer: Beer;
+export class SensorCardComponent implements OnInit, OnDestroy {
+  @Input() public sensorId: string;
+  public weightSensor: WeightSensor;
+  public beer: Beer;
   public modal: SkyModalInstance;
   public flyout: SkyFlyoutInstance<any>;
   public screenSize: SkyMediaBreakpoints;
   private mediaQuerySubscription: Subscription;
+  public isWaiting: boolean = false;
 
   constructor(
+    private apiSvc: ApiService,
     private modalSvc: SkyModalService,
     private flyoutSvc: SkyFlyoutService,
     private mediaQueries: SkyMediaQueryService
@@ -47,6 +59,61 @@ export class SensorCardComponent implements OnDestroy {
     this.mediaQuerySubscription = this.mediaQueries.subscribe((breakpoint: SkyMediaBreakpoints) => {
       this.screenSize = breakpoint;
     });
+  }
+
+  public ngOnInit() {
+    this.isWaiting = true;
+    this.apiSvc.getSensor(this.sensorId)
+      .pipe(
+        mergeMap((result) => {
+          this.weightSensor = WeightSensor.getWeightSensorFromDbObject(result);
+          return this.apiSvc.getBeer(this.weightSensor.breweryDbId);
+        }),
+        finalize(() => {
+          this.isWaiting = false;
+        })
+      )
+      .subscribe({
+        next: (result) => {
+          this.initializeBeerObject(JSON.parse(result));
+        },
+        error: () => { console.log('error'); }
+      });
+  }
+
+  // Convert the keg sensor readings and BreweryDb api response to our client Beer object
+  public initializeBeerObject(obj: any) {
+    let beer = new Beer({
+      id: obj.data.id,
+      name: obj.data.name,
+      description: obj.data.description,
+      abv: obj.data.abv,
+      ibu: obj.data.ibu,
+      style: obj.data.style.shortName
+    });
+
+    if (obj.data.breweries) {
+      beer.brewery = new Brewery({
+        id: obj.data.breweries[0].id,
+        name: obj.data.breweries[0].name,
+        imageSmallUrl: obj.data.breweries[0].images.icon,
+        imageMediumUrl: obj.data.breweries[0].images.squareMedium
+      });
+    } else {
+      beer.brewery = new Brewery();
+    }
+
+    let kegMapping = KEG_MAPPING.map.get(this.weightSensor.kegType);
+    beer.keg = new Keg({
+      currentWeight: this.weightSensor.weight,
+      fullWeight: this.weightSensor.fullWeight,
+      kegType: this.weightSensor.kegType,
+      kegTypeCapacity: +kegMapping.capacity,
+      kegTypeName: kegMapping.name,
+      kegTypeLabel: kegMapping.label
+    });
+
+    this.beer = beer;
   }
 
   // The SVG DY attribute indicates a vertical shift from the top down
@@ -86,14 +153,16 @@ export class SensorCardComponent implements OnDestroy {
     }
   }
 
+  // open a modal view for larger view screens
   public openBeerInfoModal(): void {
     let modalConfig: SkyModalConfigurationInterface = {
       providers: [{
         provide: Beer,
         useValue: this.beer
-      }]
+      }],
+      size: 'large'
     };
-    modalConfig.size = 'large';
+
     this.modal = this.modalSvc.open(BeerInfoModalComponent, modalConfig);
 
     this.modal.closed.subscribe(() => {
@@ -101,6 +170,7 @@ export class SensorCardComponent implements OnDestroy {
     });
   }
 
+  // open a flyout for smaller view screens
   public openBeerInfoFlyout(): void {
     const flyoutConfig: SkyFlyoutConfig = {
       providers: [{
@@ -115,6 +185,14 @@ export class SensorCardComponent implements OnDestroy {
     this.flyout.closed.subscribe(() => {
       this.flyout = undefined;
     });
+  }
+
+  public getUniqueSvgId(): string {
+    return 'keg-fill-' + this.weightSensor.id;
+  }
+
+  public getUniqueSvgImageFilter(): string {
+    return 'url(#' + this.getUniqueSvgId() + ')';
   }
 
   public ngOnDestroy() {

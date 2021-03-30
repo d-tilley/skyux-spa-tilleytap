@@ -2,10 +2,16 @@
 </app-nav>
 
 <main>
-  <sky-fluid-grid>
+  <sky-fluid-grid *ngIf="user">
     <sky-row>
-      <sky-column>
-        <app-sensor-card *ngIf="beer" [sensor]="sensor" [beer]="beer"></app-sensor-card>
+      <sky-column *ngFor="let sensorId of user.sensorIds"
+        screenXSmall="12"
+        screenSmall="6"
+        screenMedium="4"
+        screenLarge="3">
+        <div class="card-content">
+          <app-sensor-card [sensorId]="sensorId"></app-sensor-card>
+        </div>
       </sky-column>
     </sky-row>
   </sky-fluid-grid>

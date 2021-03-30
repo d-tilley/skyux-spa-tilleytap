@@ -21,14 +21,14 @@
     <div class="keg-remaining-icon">
       <svg width="80px" height="100px">
         <defs>
-          <filter id="keg-fill" x="0%" y="0%">
+          <filter [attr.id]="getUniqueSvgId()" x="0%" y="0%">
             <feFlood [attr.flood-color]="getSvgFillColor(beer.keg.getPercentRemaining())"/>
             <feOffset [attr.dy]="convertSvgFill(beer.keg.getPercentRemaining())"/>
             <feComposite operator="in" in2="SourceGraphic"/>
             <feComposite operator="over" in2="SourceGraphic"/>
           </filter>
         </defs>
-        <image [attr.filter]="'url(#keg-fill)'" xlink:href="~/assets/beer-keg.svg" width="80px" height="100px"/>
+        <image [attr.filter]="getUniqueSvgImageFilter()" xlink:href="~/assets/beer-keg.svg" width="80px" height="100px"/>
       </svg>
     </div>
     <p>
@@ -49,7 +49,7 @@
         [args]="[lastBeerPourValue]">
       </sky-format>
       <ng-template #lastBeerPourValue>
-        <strong>{{(sensor.metadata.lastBeerPour * 1000) | dateAgo}}</strong>
+        <strong>{{(weightSensor.lastBeerPour * 1000) | dateAgo}}</strong>
       </ng-template>
     </p>
   </sky-card-content>
@@ -59,9 +59,9 @@
         <sky-dropdown-item>
           <button type="button" (click)="openBeerInfo()">View beer info</button>
         </sky-dropdown-item>
-        <!-- <sky-dropdown-item>
-          <button type="button">Edit settings</button>
-        </sky-dropdown-item> -->
+        <sky-dropdown-item>
+          <button type="button">View metrics</button>
+        </sky-dropdown-item>
       </sky-dropdown-menu>
     </sky-dropdown>
   </sky-card-actions>

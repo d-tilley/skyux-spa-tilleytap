@@ -6,7 +6,8 @@ import {
   SkyAlertModule,
   SkyKeyInfoModule,
   SkyIconModule,
-  SkyWaitModule
+  SkyWaitModule,
+  SkyLabelModule
 } from '@skyux/indicators';
 import {
   SkyFluidGridModule,
@@ -36,7 +37,8 @@ import { SkyDropdownModule } from '@skyux/popovers';
     SkyWaitModule,
     SkyMediaQueryModule,
     SkyModalModule,
-    SkyDropdownModule
+    SkyDropdownModule,
+    SkyLabelModule
   ]
 })
 export class AppSkyModule { }

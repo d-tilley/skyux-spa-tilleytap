@@ -51,10 +51,15 @@ sky-card-content {
   font-weight: 100;
 }
 
+::ng-deep .sky-card {
+  width: 100% !important;
+  margin: 0 auto !important;
+}
+
 @media screen and (max-width: 767px) {
   ::ng-deep .sky-card {
     width: 100% !important;
-    margin: 0 auto !important;
+    margin: 8px auto !important;
   }
 }
 

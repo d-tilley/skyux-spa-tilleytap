@@ -9,9 +9,9 @@ export class User {
   public id: string;
 
   /**
-   * The sensor ids for the user
+   * The sensors for the user
    */
-  public sensorIds: string[];
+  public sensors: SensorMap[];
 
   constructor(init: any) {
     Object.assign(this, init);
@@ -23,7 +23,19 @@ export class User {
   public static getUserFromDbObject(obj: any) {
     return new User({
       id: obj.id,
-      sensorIds: obj.metadata.sensorIds
+      sensors: obj.metadata.sensors
     });
   }
+}
+
+export class SensorMap {
+  /**
+   * The sensor id
+   */
+  public sensorId: string;
+
+  /**
+   * The sensor type
+   */
+  public sensorType: number;
 }

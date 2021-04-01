@@ -22,6 +22,7 @@ sky-card-actions sky-icon {
 sky-card-content {
   text-align: center;
   display: block;
+  height: 100%;
 }
 
 .keg-info {
@@ -53,14 +54,7 @@ sky-card-content {
 
 ::ng-deep .sky-card {
   width: 100% !important;
-  margin: 0 auto !important;
-}
-
-@media screen and (max-width: 767px) {
-  ::ng-deep .sky-card {
-    width: 100% !important;
-    margin: 8px auto !important;
-  }
+  margin: 8px auto !important;
 }
 
 @media screen and (max-width: 350px) {

@@ -6,7 +6,7 @@ import {
 } from '@angular/core';
 
 import { Subscription } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { finalize, mergeMap } from 'rxjs/operators';
 
 import {
   SkyMediaQueryService,
@@ -48,6 +48,7 @@ export class SensorCardComponent implements OnInit, OnDestroy {
   public flyout: SkyFlyoutInstance<any>;
   public screenSize: SkyMediaBreakpoints;
   private mediaQuerySubscription: Subscription;
+  public isWaiting: boolean = false;
 
   constructor(
     private apiSvc: ApiService,
@@ -61,16 +62,19 @@ export class SensorCardComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit() {
+    this.isWaiting = true;
     this.apiSvc.getSensor(this.sensorId)
       .pipe(
         mergeMap((result) => {
           this.weightSensor = WeightSensor.getWeightSensorFromDbObject(result);
           return this.apiSvc.getBeer(this.weightSensor.breweryDbId);
+        }),
+        finalize(() => {
+          this.isWaiting = false;
         })
       )
       .subscribe({
         next: (result) => {
-          console.log('beer result: ' + JSON.stringify(result));
           this.initializeBeerObject(JSON.parse(result));
         },
         error: () => { console.log('error'); }

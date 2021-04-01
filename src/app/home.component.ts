@@ -31,7 +31,6 @@ export class HomeComponent implements OnInit {
     .subscribe({
       next: (result) => {
         this.user = User.getUserFromDbObject(result);
-        console.log('user: ' + JSON.stringify(this.user));
       },
       error: () => { console.log('error'); }
     });

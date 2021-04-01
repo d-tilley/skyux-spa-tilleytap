@@ -15,8 +15,10 @@
   "app": {
     "title": "TilleyTap - Home Kegerator Monitor",
     "theming": {
-      "supportedThemes": ["modern"],
-      "theme": "modern"
+      "supportedThemes": [
+        "default", "modern"
+      ],
+      "theme": "default"
     }
   }
 }

@@ -4,14 +4,13 @@
 <main>
   <sky-fluid-grid *ngIf="user">
     <sky-row>
-      <sky-column *ngFor="let sensorId of user.sensorIds"
+      <sky-column *ngFor="let sensor of user.sensors"
         screenXSmall="12"
         screenSmall="6"
         screenMedium="4"
         screenLarge="3">
-        <div class="card-content">
-          <app-sensor-card [sensorId]="sensorId"></app-sensor-card>
-        </div>
+        <app-sensor-card *ngIf="sensor.sensorType == 0" [sensorId]="sensor.sensorId"></app-sensor-card>
+        <app-temperature-card *ngIf="sensor.sensorType == 1" [sensorId]="sensor.sensorId"></app-temperature-card>
       </sky-column>
     </sky-row>
   </sky-fluid-grid>
